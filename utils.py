@@ -3,7 +3,7 @@ Modulo en el que vamos a implementar la logica que usaremos para los distintos c
 
 """
 
-# Crear funciones para los distintos tipos de conversiones que vamos a realizar
+# TODO Crear funciones para los distintos tipos de conversiones que vamos a realizar
 
 def binario_a_decimal(num: str) -> int:
     """
@@ -15,9 +15,12 @@ def binario_a_decimal(num: str) -> int:
     luego creamos una variable donde almacenaremos el resultado y otra para almacenar la potencia de dos sobre la cual vamos a elevar
     por ultimo iteramos sobre todo los caracteres de nuestro binario repetido y le sumamos a nuestro resultado la respectiva potencia de dos
 
+
     imprimimos el resultado (19)
     """
     # TODO anañdir mas validacion al valor ingresado
+    if not all(c in "01" for c in num):
+        raise ValueError("Entrada no válida, solo números binarios (0-1)")
 
     # TODO revertir el numero
     num_reversed = num[::-1]
@@ -40,60 +43,37 @@ def binario_a_decimal(num: str) -> int:
     return sum(int(digit) * (2**int(exp)) for exp, digit in enumerate(reversed(num)))
     
     
-def hexadecimal(num):
+def hexadecimal_a_decimal(num:str):
     """
+    Toma un numero hexadecimal y lo transforma en decimal
+    parametros:
 
+    -> num: str => el valor hexadecimal al cual se le va a realizar la conversion
+
+    Ej -> 2F8 => 760
     """
     # TODO anañdir mas validacion al valor ingresado
+    if not all(c in "0123456789abcdefABCDEF" for c in num):
+        raise ValueError("Entrada no valida, debe ser un numero hexadecimal (A-F, 0-9)")
 
     # TODO crear un diccionario que contenga las letras y sus valores
-    letras: dict = {"A": 10, "B": 11, "C": 12, "D": 13, "E": 14, "F": 15}
-
-    # TODO creamos una variable donde almacenaremos cada caracter con su indice que usaremos como el exponente
-    conversion: enumerate = enumerate(reversed(num))
+    HEX_MAP: dict = {"A": 10, "B": 11, "C": 12, "D": 13, "E": 14, "F": 15}
 
     # TODO variable que va a almacenar la el resultado de la conversion
     suma: int = 0
 
-    # TODO variable donde vamos a almacenar el caracter alfabetico como decimal
-    char_d: int= 0
-
     # TODO inicializamos el bucle e iteramos sobre el enumerate de nuestro numero alfanumerico
-    for exp, digit in conversion:
-        # TODO checkeamos que el digito actual este en el alfabeto
-        if digit  in letras:
-            # TODO agregamos la representacion decimal del caracter alfabetico a la variable previamente creada
-            char_d = letras[digit]
-            # sumamos el valor a la variable
-            suma += int(char_d) * (16**int(exp))
-        # TODO si el caracter se encuentra entre 0-9
-        else:
-            suma += int(digit) * (16**int(exp))
+    for exp, digit in enumerate(reversed(num)):
+        digit_value = HEX_MAP.get(digit.upper(), None) or int(digit)
+
+        # sumamos el valor a la variable
+        suma += digit_value * (16**int(exp))
 
     return suma
 
-"""
-def character_decimal(char: str) -> int:
-    checkea el caracter dado en hexadecimal y retorna su representacion en decimal
-    parametros
-    -> char: str => el caracter en cuestion
-    match char:
-        case "A":
-            return 10
-        case "B":
-            return 11
-        case "C":
-            return 12
-        case "D":
-            return 13
-        case "E":
-            return 14
-        case "F":
-            return 15
-"""    
-def decimal(num):
-    ...
+def convertir_todo(num:int):
+    valor_binario = int(num, 2)
+    valor_hexadecimal= int(num, 16)
 
-print(binario_a_decimal("11111001"))
-print(hexadecimal("2F8"))
-print(hexadecimal("2E6"))
+
+    return (num, valor_binario, valor_hexadecimal)
